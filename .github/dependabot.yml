@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Enable version updates for Github Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions once a week
+      interval: "weekly"
+
+  # Enable version updates for pip (Python)
+  - package-ecosystem: "pip"
+    # Look for a `requirements.txt` file in the root directory
+    directory: "/"
+    # Check for updates once a week
+    schedule:
+      interval: "weekly"
