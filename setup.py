@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     setuptools.setup(
         install_requires=[
-            "networkx[default]==2.8.8"
+            "networkx[default]==2.6.3"
         ],  # dependencies
         python_requires='>=3.7',
         packages=setuptools.find_packages(include=['blifparser', 'blifparser.keywords'], exclude=("tests",)),
