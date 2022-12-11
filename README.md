@@ -46,7 +46,7 @@ This means that the library works because:
 * [Author](#author)
 
 ## Requirements
-* python 3 (>= 3.6)
+* python 3 (>= 3.7)
 
 ## Installation
 
