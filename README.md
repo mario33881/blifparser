@@ -248,8 +248,10 @@ Now you can use the ```blif``` object to get the parsed data
 
 **2022-12-11 2.0.0**:
 
-Added ```get_graph()``` method to the ```BlifParser``` class: generates and returns an object containing a networkx graph with inputs, outputs, latches, subckts and boolean functions connected together.
-> This object also contains statistics which can be used when exporting the graph to an image file to roughly determine the dimensions of the image.
+* Added ```get_graph()``` method to the ```BlifParser``` class: generates and returns an object containing a networkx graph with inputs, outputs, latches, subckts and boolean functions connected together.
+  > This object also contains statistics which can be used when exporting the graph to an image file to roughly determine the dimensions of the image.
+
+* Dropped python < 3.7 support.
 
 **2021-04-23 1.0.0**:
 
