@@ -158,6 +158,35 @@ print(blif.fsm.r.name)      # name of the reset state
 print(blif.fsm.transtable)  # list of lists (contains the transition table)
 ```
 
+You can also obtain a networkx graph using the ```get_graph()``` method:
+```python
+# import the os library: useful to get the absolute path to the input file
+import os
+# import this library
+import blifparser.blifparser as blifparser
+
+# get the file path and pass it to the parser
+filepath = os.path.abspath("example.blif")
+parser = blifparser.BlifParser(filepath)
+
+# generate the graph and memorize some statistics
+graph_data = parser.get_graph()
+
+# retrive networkx graph: can be used to export it as an image or customize it
+nx_graph = graph_data.nx_graph
+
+# extract nodes from the graph: each node has inputs, outputs, a type and the color that can be used to fill the node
+# > by default .model inputs are red, .model outputs are blue, everything else is black
+ext_nodes = [n for n in nx_graph.nodes]
+
+# retrive the length of the longest label: can be used to determine the height of the graph exported onto an image
+longest_label = nx_graph.longest_label
+
+# retrive the size of the "item" node that has the most number of inputs: can be used to determine the width of the graph exported onto an image
+# > where "item" is .inputs/.outputs/.names/.subckt/.latch
+max_inputs = nx_graph.max_inputs
+```
+
 ## Description
 
 These are the first steps to use this library:
@@ -174,6 +203,9 @@ parser = blifparser.BlifParser(filepath)
 # get the object that contains the parsed data
 # from the parser
 blif = parser.blif
+
+# get an object that contains a networkx graph of the blif file and memorize some statistics
+graph_data = parser.get_graph()
 ```
 
 The ```blifparser.BlifParser()``` object is the parser:
@@ -213,6 +245,11 @@ Now you can use the ```blif``` object to get the parsed data
 > Check the "Usage > [As a library](#as-a-library)" section for more details
 
 ## Changelog
+
+**2022-12-11 2.0.0**:
+
+Added ```get_graph()``` method to the ```BlifParser``` class: generates and returns an object containing a networkx graph with inputs, outputs, latches, subckts and boolean functions connected together.
+> This object also contains statistics which can be used when exporting the graph to an image file to roughly determine the dimensions of the image.
 
 **2021-04-23 1.0.0**:
 

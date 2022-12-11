@@ -16,13 +16,14 @@ try:
     
     import blifparser.keywords as keywords
     import blifparser.utils as utils
+    import blifparser.graph as graph
 
 except (ImportError, ModuleNotFoundError):
     from _version import __version__  # noqa: F401
 
     import utils
     import keywords
-    
+    import graph
 
 
 class BlifParser:
@@ -197,6 +198,9 @@ class BlifParser:
 
         return nonewlines
 
+    def get_graph(self):
+        return graph.parse_blif(self.blif)
+
 
 def main():
     import sys
@@ -221,5 +225,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()

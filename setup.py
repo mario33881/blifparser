@@ -29,6 +29,9 @@ def get_readme():
 if __name__ == '__main__':
 
     setuptools.setup(
+        install_requires=[
+            "networkx[default]==2.8.8"
+        ],  # dependencies
         python_requires='>=3',
         packages=setuptools.find_packages(include=['blifparser', 'blifparser.keywords'], exclude=("tests",)),
         entry_points={
