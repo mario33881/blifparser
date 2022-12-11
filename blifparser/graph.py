@@ -1,5 +1,9 @@
 import networkx as nx
-import blifparser
+
+try:
+    from . import blifparser
+except (ImportError, ModuleNotFoundError):
+    import blifparser
 
 
 class Graph:

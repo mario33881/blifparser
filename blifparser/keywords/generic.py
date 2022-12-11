@@ -1,7 +1,7 @@
 try:
-    import fsm
-except (ModuleNotFoundError, ImportError):
     from . import fsm
+except (ModuleNotFoundError, ImportError):
+    import fsm
 
 
 class Model:

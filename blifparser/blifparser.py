@@ -13,10 +13,10 @@ import tempfile
 
 try:
     from ._version import __version__  # noqa: F401
-    
-    import blifparser.keywords as keywords
-    import blifparser.utils as utils
-    import blifparser.graph as graph
+
+    from . import keywords
+    from . import utils
+    from . import graph
 
 except (ImportError, ModuleNotFoundError):
     from _version import __version__  # noqa: F401
