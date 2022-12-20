@@ -1,1 +1,2 @@
-networkx[default]==2.6.3
+networkx==2.6.3
+matplotlib==3.5.3
