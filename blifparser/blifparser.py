@@ -199,6 +199,13 @@ class BlifParser:
         return nonewlines
 
     def get_graph(self):
+        """
+        Returns an object with the following attributes:
+        - nx_graph: networkx graph, 
+        - longest_label: length of the longest label
+          > the label is the text next to an edge
+        - max_inputs: maximum number of inputs that a node can have inside the nx_graph graph
+        """
         return graph.parse_blif(self.blif)
 
 
