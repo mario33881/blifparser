@@ -12,9 +12,9 @@ try:
     from . import blifparser
 
 except ImportError:
-    from .blifparser import keywords
-    from .blifparser import utils
-    from .blifparser import blifparser
+    from .blifparser import keywords    # type: ignore
+    from .blifparser import utils       # type: ignore
+    from .blifparser import blifparser  # type: ignore
 
 if __name__ == "__main__":
     blifparser.main()

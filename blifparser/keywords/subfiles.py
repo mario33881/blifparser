@@ -2,7 +2,7 @@
 
 class Search:
 
-    def __init__(self, param):
+    def __init__(self, param: str):
         if not isinstance(param, str):
             raise TypeError("'{}' is not a string".format(param))
 
@@ -11,17 +11,17 @@ class Search:
         if self.filepath == "":
             raise ValueError(".search needs one parameter")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Search('" + self.filepath + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".search " + self.filepath
 
 
 class Subckt:
-    def __init__(self, params):
+    def __init__(self, params: str):
         if not isinstance(params, str):
             raise TypeError("'{}' is not a string".format(params))
 
@@ -37,10 +37,10 @@ class Subckt:
             if "=" not in param:
                 raise ValueError("'{}' parameter is incorrect (there needs to be an equal sign '=')".format(param))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Subckt('" + self.modelname + " " + " ".join(self.params) + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".subckt " + self.modelname + " " + " ".join(self.params)

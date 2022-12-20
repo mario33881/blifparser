@@ -4,7 +4,7 @@
 import os
 
 
-def add_metadata(t_file):
+def add_metadata(t_file: str) -> str:
     """
     Adds useful metadata to the file.
 
@@ -28,7 +28,7 @@ def add_metadata(t_file):
     return tmp_out
 
 
-def remove_comments(t_file):
+def remove_comments(t_file: str) -> str:
     """
     Removes comments from the file.
     """
@@ -51,7 +51,7 @@ def remove_comments(t_file):
     return tmp_out
 
 
-def remove_params_newline(t_file):
+def remove_params_newline(t_file: str) -> str:
     """
     Removes newlines on parameters.
     """

@@ -1,13 +1,18 @@
-import networkx as nx
+
+from typing import List
+
+import networkx as nx  # type: ignore
 
 try:
     from . import blifparser
+    from .keywords.generic import Blif
 except (ImportError, ModuleNotFoundError):
-    import blifparser
+    import blifparser                  # type: ignore
+    from keywords.generic import Blif  # type: ignore
 
 
 class Graph:
-    def __init__(self, nx_graph, longest_label, max_inputs):
+    def __init__(self, nx_graph: nx.DiGraph, longest_label: int, max_inputs: int):
         """
         Memorizes the networkx graph, 
         the longest_label length, and the max_inputs number.
@@ -19,7 +24,7 @@ class Graph:
 
 class Node:
     progressive_id = 1  # makes sure that each id is unique
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Defines a node.
 
@@ -34,11 +39,13 @@ class Node:
         * many outputs
 
         """
-        self.inputs = []
-        self.outputs = []
+        self.inputs: List[str] = []
+        self.outputs: List[str] = []
         self.type = None
         self.id = Node.progressive_id
         self.node_color = "black"
+        self.parent = None
+        self.name = None
 
         Node.progressive_id += 1  # makes sure that each id is unique
     
@@ -49,7 +56,7 @@ class Node:
         return str(self.id)
 
 
-def parse_blif(t_blif):
+def parse_blif(t_blif: Blif) -> Graph:
     """
     Parses a Blif obect to create a graph.
     """
@@ -81,7 +88,7 @@ def parse_blif(t_blif):
     return Graph(G, longest_label, max_inputs)
 
 
-def make_nodes(t_blif):
+def make_nodes(t_blif: Blif) -> List[Node]:
     """
     Creates nodes that are not binded to each other
     but with the necessary information to bind them later.

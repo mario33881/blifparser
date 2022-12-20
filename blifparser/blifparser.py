@@ -12,23 +12,19 @@ import re
 import tempfile
 
 try:
-    from ._version import __version__  # noqa: F401
-
     from . import keywords
     from . import utils
     from . import graph
 
 except (ImportError, ModuleNotFoundError):
-    from _version import __version__  # noqa: F401
-
-    import utils
-    import keywords
-    import graph
+    import utils     # type: ignore
+    import keywords  # type: ignore
+    import graph     # type: ignore
 
 
 class BlifParser:
 
-    def __init__(self, t_file):  # noqa: C901
+    def __init__(self, t_file: str) -> None:  # noqa: C901
         """
         Parses the <t_file> BLIF file.
 
@@ -46,7 +42,7 @@ class BlifParser:
 
         with open(prepared_file) as fin:
             line = fin.readline()
-            i = 1
+            i = "unknown"
 
             while line != "":
                 linestrip = line.strip()
@@ -173,7 +169,7 @@ class BlifParser:
             except Exception as e:
                 self.blif.problems.append("[BOOLEAN FUNCTION PROBLEM] " + str(e))
 
-    def prepare_file(self, t_file):
+    def prepare_file(self, t_file: str) -> str:
         """
         Prepares the <t_file> file for parsing.
 
@@ -198,10 +194,10 @@ class BlifParser:
 
         return nonewlines
 
-    def get_graph(self):
+    def get_graph(self) -> graph.Graph:
         """
         Returns an object with the following attributes:
-        - nx_graph: networkx graph, 
+        - nx_graph: networkx graph
         - longest_label: length of the longest label
           > the label is the text next to an edge
         - max_inputs: maximum number of inputs that a node can have inside the nx_graph graph
@@ -209,7 +205,7 @@ class BlifParser:
         return graph.parse_blif(self.blif)
 
 
-def main():
+def main() -> None:
     import sys
 
     print("")

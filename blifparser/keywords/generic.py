@@ -1,11 +1,15 @@
+from typing import List, Optional
+
 try:
     from . import fsm
+    from . import subfiles
 except (ModuleNotFoundError, ImportError):
-    import fsm
+    import fsm       # type: ignore
+    import subfiles  # type: ignore
 
 
 class Model:
-    def __init__(self, modelname):
+    def __init__(self, modelname: str):
         """
         Defines a .model keyword object.
 
@@ -21,17 +25,17 @@ class Model:
         if " " in self.name or self.name == "":
             raise ValueError(".model accepts (and needs) only one parameter (the parameter can't contain spaces)")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Model('" + self.name + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".model " + self.name
 
 
 class Inputs:
-    def __init__(self, inputstring):
+    def __init__(self, inputstring: str):
         """
         Defines a .inputs keyword object.
 
@@ -47,17 +51,17 @@ class Inputs:
         if len(self.inputs) == 0:
             raise ValueError(".inputs keyword expects at least one parameter")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Inputs('" + " ".join(self.inputs) + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".inputs " + " ".join(self.inputs)
 
 
 class Outputs:
-    def __init__(self, outputstring):
+    def __init__(self, outputstring: str):
         """
         Defines a .outputs keyword object.
 
@@ -73,17 +77,17 @@ class Outputs:
         if len(self.outputs) == 0:
             raise ValueError(".outputs keyword expects at least one parameter")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Outputs('" + " ".join(self.outputs) + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".outputs " + " ".join(self.outputs)
 
 
 class Names:
-    def __init__(self, params, dontcare):
+    def __init__(self, params: str, dontcare: bool):
         """
         Defines a .names keyword object.
 
@@ -104,7 +108,7 @@ class Names:
         self.v_params = [param for param in params.split(" ") if param != ""]
 
         self.inputs = []
-        self.truthtable = []
+        self.truthtable: List[List[str]] = []
         self.output = None
         self.is_dontcare = dontcare
 
@@ -113,7 +117,7 @@ class Names:
 
         self.output = self.v_params[-1]
 
-    def is_valid(self):  # noqa: C901
+    def is_valid(self) -> bool:  # noqa: C901
         """
         Validates data in the Names() object.
 
@@ -175,11 +179,11 @@ class Names:
 
         return True
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Names('" + " ".join(self.inputs) + " " + self.output + "', " + str(self.is_dontcare) + ")"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         names = ""
         if self.is_dontcare:
@@ -197,7 +201,7 @@ class Names:
 
 
 class Latch:
-    def __init__(self, params):  # noqa: C901
+    def __init__(self, params: str):  # noqa: C901
         if not isinstance(params, str):
             raise TypeError("'{}' is not a string".format(params))
 
@@ -249,7 +253,7 @@ class Latch:
             if self.initval not in ["0", "1", "2", "3"]:
                 raise ValueError("<init-val> should be one of these values: ['0', '1', '2', '3']")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         latch = "Latch('"
 
@@ -265,7 +269,7 @@ class Latch:
         latch += "')"
         return latch
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         latch = ".latch "
 
@@ -282,16 +286,16 @@ class Latch:
 
 
 class Blif:
-    def __init__(self):
-        self.model = None
-        self.inputs = None
-        self.outputs = None
+    def __init__(self) -> None:
+        self.model: Optional[Model] = None
+        self.inputs: Optional[Inputs] = None
+        self.outputs: Optional[Outputs] = None
         self.fsm = fsm.Fsm()
-        self.imports = []
-        self.subcircuits = []
-        self.latches = []
-        self.booleanfunctions = []
-        self.problems = []
+        self.imports: List[subfiles.Search] = []
+        self.subcircuits: List[subfiles.Subckt] = []
+        self.latches: List[Latch] = []
+        self.booleanfunctions: List[Names] = []
+        self.problems: List[str] = []
 
         self.nkeywords = {
             ".model": 0,
@@ -319,7 +323,7 @@ class Blif:
             ".exdc": 0
         }
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         blif = self.model.__str__() + "\n"
         blif += self.inputs.__str__() + "\n"

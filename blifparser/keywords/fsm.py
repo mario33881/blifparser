@@ -1,7 +1,8 @@
+from typing import List, Set, Optional
 
 
 class Fsm:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Defines an Fsm() object.
 
@@ -16,16 +17,16 @@ class Fsm:
             > Each row contains 4 elements: ["<inputs>", "<current_state>", "<next_state>", "<outputs>"]
         * self.statecodes: list of Code() objects (they represent .code keywords, state encodings)
         """
-        self.i = None
-        self.o = None
-        self.s = None
-        self.p = None
-        self.r = None
-        self.ispresent = False
-        self.transtable = []
-        self.statecodes = []
+        self.i: Optional[I] = None
+        self.o: Optional[O] = None
+        self.s: Optional[S] = None
+        self.p: Optional[P] = None
+        self.r: Optional[R] = None
+        self.ispresent: bool = False
+        self.transtable: List[List[str]] = []
+        self.statecodes: List[Code] = []
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         """
         Validates all the elements present in an Fsm() object.
         """
@@ -50,7 +51,7 @@ class Fsm:
 
         return True
 
-    def validate_i(self):
+    def validate_i(self) -> None:
         """
         Validates .i keyword: it needs to be set as an I() instance.
         """
@@ -60,7 +61,7 @@ class Fsm:
         else:
             raise ValueError(".i must be set")
 
-    def validate_o(self):
+    def validate_o(self) -> None:
         """
         Validates .o keyword: it needs to be set as an O() instance.
         """
@@ -70,7 +71,7 @@ class Fsm:
         else:
             raise ValueError(".o must be set")
 
-    def validate_p(self):
+    def validate_p(self) -> None:
         """
         Validates .p keyword: it is valid if it is a P() instance or if it is None.
 
@@ -90,7 +91,7 @@ class Fsm:
                                  "(it should be '{}' instead of '{}' because the "
                                  "transition table has that amount of rows)".format(len(self.transtable), num_terms))
 
-    def validate_s(self):
+    def validate_s(self) -> None:
         """
         Validates .s keyword: it is valid if it is a S() instance or if it is None.
 
@@ -110,7 +111,7 @@ class Fsm:
                                  "(it should be '{}' instead of '{}' because the transition "
                                  "table contains that amount of unique states)".format(expected_num, num_states))
 
-    def validate_r(self):
+    def validate_r(self) -> None:
         """
         Validates .r keyword: it is valid if it is a R() instance or if it is None.
 
@@ -128,7 +129,7 @@ class Fsm:
                 raise ValueError(".r <reset-state> has incorrect <reset-state> value "
                                  "(can't find '{}' in the transition table)".format(reset_state))
 
-    def validate_codes(self):
+    def validate_codes(self) -> None:
         """
         Validates .code keywords: it is valid if self.statecodes contains Code() instances.
         """
@@ -140,7 +141,7 @@ class Fsm:
             if not isinstance(code, Code):
                 raise TypeError(".code in statecodes must be Code() instance")
 
-    def get_state_names(self):
+    def get_state_names(self) -> Set[str]:
         """
         Get unique state names from the transition table.
         """
@@ -152,7 +153,7 @@ class Fsm:
 
         return states
 
-    def validate_transtable(self):  # noqa: C901
+    def validate_transtable(self) -> None:  # noqa: C901
         """
         Validates the transition table.
 
@@ -207,7 +208,7 @@ class Fsm:
                                  "of outputs (found {} elements in '{}' but expected {} "
                                  "based on the .o parameter)".format(" ".join(row), len(row[3]), row[3], self.o.num))
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         # be sure that the object is validated
         self.is_valid()
@@ -246,7 +247,7 @@ class Fsm:
 
 
 class I:
-    def __init__(self, params):
+    def __init__(self, params: str):
         """
         Defines .i keyword object.
 
@@ -264,17 +265,17 @@ class I:
 
         self.num = params.strip()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "I('" + self.num + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".i " + self.num
 
 
 class O:
-    def __init__(self, params):
+    def __init__(self, params: str):
         """
         Defines .o keyword object.
 
@@ -292,17 +293,17 @@ class O:
 
         self.num = params.strip()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "O('" + self.num + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".o " + self.num
 
 
 class S:
-    def __init__(self, params):
+    def __init__(self, params: str):
         """
         Defines .s keyword object.
 
@@ -320,17 +321,17 @@ class S:
 
         self.num = params.strip()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "S('" + self.num + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".s " + self.num
 
 
 class P:
-    def __init__(self, params):
+    def __init__(self, params: str):
         """
         Defines .p keyword object.
 
@@ -348,17 +349,17 @@ class P:
 
         self.num = params.strip()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "P('" + self.num + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".p " + self.num
 
 
 class R:
-    def __init__(self, params):
+    def __init__(self, params: str):
         """
         Defines .r keyword object.
 
@@ -374,17 +375,17 @@ class R:
         if " " in self.name or self.name == "":
             raise ValueError(".r accepts (and needs) only one parameter (the parameter can't contain spaces)")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "R('" + self.name + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".r " + self.name
 
 
 class Code:
-    def __init__(self, params):
+    def __init__(self, params: str):
         """
         Defines .code keyword object.
 
@@ -410,10 +411,10 @@ class Code:
                                  "(only '0's and '1's are accepted): "
                                  ".code " + self.state_name + " " + self.state_encoding)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Object representation."""
         return "Code('" + self.state_name + " " + self.state_encoding + "')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printed string."""
         return ".code " + self.state_name + " " + self.state_encoding
