@@ -107,15 +107,14 @@ class Names:
 
         self.v_params = [param for param in params.split(" ") if param != ""]
 
-        self.inputs = []
+        if len(self.v_params) == 0:
+            raise ValueError("params should contain at least one parameter")
+
         self.truthtable: List[List[str]] = []
-        self.output = None
         self.is_dontcare = dontcare
 
-        if len(self.v_params) > 1:
-            self.inputs = self.v_params[:-1]
-
-        self.output = self.v_params[-1]
+        self.inputs = self.v_params[:-1]  # get all parameters but the last one (returns [] when there's only one parameter in v_params)
+        self.output = self.v_params[-1]   # get the last parameter
 
     def is_valid(self) -> bool:  # noqa: C901
         """
@@ -208,8 +207,6 @@ class Latch:
         self.v_params = [param for param in params.split(" ") if param != ""]
 
         self.problems = []
-        self.input = None
-        self.output = None
         self.type = None
         self.control = None
         self.initval = None
@@ -255,32 +252,32 @@ class Latch:
 
     def __repr__(self) -> str:
         """Object representation."""
-        latch = "Latch('"
-
-        if len(self.v_params) == 2:
-            latch += self.input + " " + self.output
-        elif len(self.v_params) == 3:
-            latch += self.input + " " + self.output + " " + self.initval
-        elif len(self.v_params) == 4:
-            latch += self.input + " " + self.output + " " + self.type + " " + self.control
-        else:
-            latch += self.input + " " + self.output + " " + self.type + " " + self.control + " " + self.initval
+        latch = "Latch('" + self.input + " " + self.output
+        
+        if self.type and self.control:
+            # .latch <input> <output> <type> <control> ...
+            latch += " " + self.type + " " + self.control
+        
+        if self.initval:
+            # .latch <input> <output> <type> <control> <init-val> or
+            # .latch <input> <output> <init-val>
+            latch += " " + self.initval
 
         latch += "')"
         return latch
 
     def __str__(self) -> str:
         """Printed string."""
-        latch = ".latch "
+        latch = ".latch " + self.input + " " + self.output
 
-        if len(self.v_params) == 2:
-            latch += self.input + " " + self.output
-        elif len(self.v_params) == 3:
-            latch += self.input + " " + self.output + " " + self.initval
-        elif len(self.v_params) == 4:
-            latch += self.input + " " + self.output + " " + self.type + " " + self.control
-        else:
-            latch += self.input + " " + self.output + " " + self.type + " " + self.control + " " + self.initval
+        if self.type and self.control:
+            # .latch <input> <output> <type> <control> ...
+            latch += " " + self.type + " " + self.control
+
+        if self.initval:
+            # .latch <input> <output> <type> <control> <init-val> or
+            # .latch <input> <output> <init-val>
+            latch += " " + self.initval
 
         return latch
 

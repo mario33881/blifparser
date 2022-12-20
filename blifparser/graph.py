@@ -1,5 +1,4 @@
-
-from typing import List
+from typing import List, Optional
 
 import networkx as nx  # type: ignore
 
@@ -41,11 +40,10 @@ class Node:
         """
         self.inputs: List[str] = []
         self.outputs: List[str] = []
-        self.type = None
+        self.type: Optional[str] = None
         self.id = Node.progressive_id
-        self.node_color = "black"
-        self.parent = None
-        self.name = None
+        self.node_color: str = "black"
+        self.name: Optional[str] = None
 
         Node.progressive_id += 1  # makes sure that each id is unique
     
@@ -98,24 +96,24 @@ def make_nodes(t_blif: Blif) -> List[Node]:
     nodes = []
 
     # blif inputs (.inputs) are nodes that have one output: the input value
-    for input in t_blif.inputs.inputs:
-        n = Node()
-        n.outputs.append(input)
-        n.type = "input"
-        n.parent = None
-        n.name = str(n.id)
-        n.node_color = "red"
-        nodes.append(n)
+    if t_blif.inputs:
+        for input in t_blif.inputs.inputs:
+            n = Node()
+            n.outputs.append(input)
+            n.type = "input"
+            n.name = str(n.id)
+            n.node_color = "red"
+            nodes.append(n)
     
     # blif outputs (.outputs) are nodes that have one input: the output value
-    for output in t_blif.outputs.outputs:
-        n = Node()
-        n.inputs.append(output)
-        n.type = "output"
-        n.parent = None
-        n.name = str(n.id)
-        n.node_color = "blue"
-        nodes.append(n)
+    if t_blif.outputs:
+        for output in t_blif.outputs.outputs:
+            n = Node()
+            n.inputs.append(output)
+            n.type = "output"
+            n.name = str(n.id)
+            n.node_color = "blue"
+            nodes.append(n)
 
     # blif boolean functions, defined using .names arg1 arg2 ...
     # have one output and might have multiple inputs
@@ -128,7 +126,6 @@ def make_nodes(t_blif: Blif) -> List[Node]:
         
         n.outputs.append(function.output)
         n.type = "boolean_function"
-        n.parent = None
         n.name = str(n.id)
         nodes.append(n)
     
@@ -138,7 +135,6 @@ def make_nodes(t_blif: Blif) -> List[Node]:
         n.inputs.append(latch.input)
         n.outputs.append(latch.output)
         n.type = "latch"
-        n.parent = None
         n.name = str(n.id)
         nodes.append(n)
     
@@ -154,29 +150,30 @@ def make_nodes(t_blif: Blif) -> List[Node]:
             subckt_data = parser.blif
 
             # check if we have found the .model referenced by .subckt
-            if subckt.modelname == subckt_data.model.name:
+            if subckt_data.model and subckt.modelname == subckt_data.model.name:
                 # loop for each input (.inputs) of the .model inside the .search-ed file
-                for model_input in subckt_data.inputs.inputs:
-                    # loop for each parameter of .subckt
-                    for subckt_param in subckt.params:
-                        subckt_input = subckt_param.split("=")[0]
-                        # if the .subckt parameter is also a .model input (of the imported file)
-                        # that means that the parameter is an input of the sub-circuit
-                        if model_input == subckt_input:
-                            n.inputs.append(subckt_param.split("=")[1])
+                if subckt_data.inputs:
+                    for model_input in subckt_data.inputs.inputs:
+                        # loop for each parameter of .subckt
+                        for subckt_param in subckt.params:
+                            subckt_input = subckt_param.split("=")[0]
+                            # if the .subckt parameter is also a .model input (of the imported file)
+                            # that means that the parameter is an input of the sub-circuit
+                            if model_input == subckt_input:
+                                n.inputs.append(subckt_param.split("=")[1])
                 
                 # loop for each output (.outputs) of the .model inside the .search-ed file
-                for model_output in subckt_data.outputs.outputs:
-                    # loop for each parameter of .subckt
-                    for subckt_param in subckt.params:
-                        subckt_output = subckt_param.split("=")[0]
-                        # if the .subckt parameter is also a .model output (of the imported file)
-                        # that means that the parameter is an output of the sub-circuit
-                        if model_output == subckt_output:
-                            n.outputs.append(subckt_param.split("=")[1])
+                if subckt_data.outputs:
+                    for model_output in subckt_data.outputs.outputs:
+                        # loop for each parameter of .subckt
+                        for subckt_param in subckt.params:
+                            subckt_output = subckt_param.split("=")[0]
+                            # if the .subckt parameter is also a .model output (of the imported file)
+                            # that means that the parameter is an output of the sub-circuit
+                            if model_output == subckt_output:
+                                n.outputs.append(subckt_param.split("=")[1])
         
         n.type = "subckt"
-        n.parent = None
         n.name = str(n.id)
         nodes.append(n)
 

@@ -55,7 +55,7 @@ class BlifParser:
                 linestrip = re.sub("@!(.*?)!@", "", linestrip)
 
                 keyword = None
-                params = None
+                params = ""
 
                 # get the keyword in the current line
                 if linestrip.startswith("."):

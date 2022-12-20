@@ -190,7 +190,7 @@ class Fsm:
                                      "['0', '1', '-'])".format(row[0], " ".join(row)))
 
             # be sure that the inputs are the amount specified by the .i keyword
-            if len(row[0]) != int(self.i.num):
+            if self.i and len(row[0]) != int(self.i.num):
                 raise ValueError("'{}' row (transition table) has an unexpected number "
                                  "of inputs (found {} elements in '{}' but expected {} "
                                  "based on the .i parameter)".format(" ".join(row), len(row[0]), row[0], self.i.num))
@@ -203,7 +203,7 @@ class Fsm:
                                      "['0', '1', '-'])".format(row[3], " ".join(row)))
 
             # be sure that the outputs are the amount specified by the .o keyword
-            if len(row[3]) != int(self.o.num):
+            if self.o and len(row[3]) != int(self.o.num):
                 raise ValueError("'{}' row (transition table) has an unexpected number "
                                  "of outputs (found {} elements in '{}' but expected {} "
                                  "based on the .o parameter)".format(" ".join(row), len(row[3]), row[3], self.o.num))
