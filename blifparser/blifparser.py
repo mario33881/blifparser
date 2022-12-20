@@ -133,7 +133,7 @@ class BlifParser:
                             self.blif.fsm.statecodes.append(keywords.fsm.Code(params))
                         elif keyword == ".end":
                             if not is_model:
-                                self.blif.problems.append("[ERROR][LINE ~ {}] Unexpected end of model on line {}".format(i))
+                                self.blif.problems.append("[ERROR][LINE ~ {}] Unexpected end of model on line {}".format(i, i))
                             is_model = False
 
                         try:
