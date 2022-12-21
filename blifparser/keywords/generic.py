@@ -121,7 +121,14 @@ class Names:
         Validates data in the Names() object.
 
         Validation steps:
-
+        - make sure that self.inputs is a list of strings
+        - make sure that self.output is a string
+        - make sure that self.is_dontcare is a boolean
+        - make sure that self.truthtable is a list
+        - make sure that each row of the truthtable is a list of strings with at least one string
+        - check that each row has the expected number of elements
+        - check that the inputs specified in each row are made of "0"s, "1"s and/or "-"s
+        - check that the output specified in each row is a "0" or a "1"
         """
         # be sure that self.inputs is a list of strings
         if not isinstance(self.inputs, list):
@@ -148,6 +155,9 @@ class Names:
         for row in self.truthtable:
             if not isinstance(row, list):
                 raise TypeError("row '{}' is not a list (under '{}')".format(row, self.__str__()))
+
+            if len(row) == 0:
+                raise ValueError("the truthtable must not contain empty rows")
 
             for el in row:
                 if not isinstance(el, str):
@@ -201,6 +211,19 @@ class Names:
 
 class Latch:
     def __init__(self, params: str):  # noqa: C901
+        """
+        Defines a .latch keyword object.
+
+        A latch as between 2 and 5 parameters. These are all the possible combinations:
+        - input, output
+        - input, output, initial register value
+        - input, output, latch type, control clock
+        - input, output, latch type, control clock, initial register value
+
+        (when specified) the latch type must be one of the following values: ["fe", "re", "ah", "al", "as"]
+        (when specified) the initial register value must be one of the following values: ['0', '1', '2', '3']
+        > note: 2 and 3 are not the actual values stored inside the register. They represent don't care (2) and unknown (3).
+        """
         if not isinstance(params, str):
             raise TypeError("'{}' is not a string".format(params))
 
@@ -284,6 +307,9 @@ class Latch:
 
 class Blif:
     def __init__(self) -> None:
+        """
+        Represents the parsed BLIF file.
+        """
         self.model: Optional[Model] = None
         self.inputs: Optional[Inputs] = None
         self.outputs: Optional[Outputs] = None
