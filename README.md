@@ -246,6 +246,13 @@ Now you can use the ```blif``` object to get the parsed data
 
 ## Changelog
 
+**2023-02-28 2.0.1**:
+
+* fix dependencies: removed unused dependencies, made requirements.txt equal to setup.cfg dependencies
+* added more comments, types and unit tests
+* fix "Replacement index 1 out of range" error caused by missing string format parameter
+* check before accessing variables that might be None and lists that might be empty
+
 **2022-12-12 2.0.0**:
 
 * Added ```get_graph()``` method to the ```BlifParser``` class: generates and returns an object containing a networkx graph with inputs, outputs, latches, subckts and boolean functions connected together.
