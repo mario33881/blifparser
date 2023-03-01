@@ -15,8 +15,6 @@ You can also use this library as a basic BLIF validator.
 > Complex checks such as cross file definition checks and input-output names check are NOT implemented
 > because the primary intent of this library is to parse BLIF files.
 
-A more full/complex validator is in the works (and it will use this parser).
-
 ---
 ---
 
@@ -47,6 +45,8 @@ This means that the library works because:
 
 ## Requirements
 * python 3 (>= 3.7)
+* networkx library: needed to create the graph (```get_graph()``` method)
+* matplotlib library: needed for networkx
 
 ## Installation
 
@@ -246,7 +246,7 @@ Now you can use the ```blif``` object to get the parsed data
 
 ## Changelog
 
-**2023-02-28 2.0.1**:
+**2023-03-01 2.0.1**:
 
 * fix dependencies: removed unused dependencies, made requirements.txt equal to setup.cfg dependencies
 * added more comments, types and unit tests
